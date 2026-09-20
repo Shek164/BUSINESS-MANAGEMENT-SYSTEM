@@ -989,11 +989,13 @@ saleForm.addEventListener(
 
         const newSale = {
 
-            id: Date.now(),
+    id: Date.now(),
 
-            customer: customer,
+    customerId: selectedCustomer.id,
 
-            productId: product.id,
+    customer: selectedCustomer.name,
+
+    productId: product.id,
 
             productName: product.name,
 
