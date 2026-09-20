@@ -1,1 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+        content="Professional Business Management System for managing products, inventory and sales.">
+
+    <title>Business Management System</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <h2>BizManager</h2>
+            <span>Business Management</span>
+        </div>
+
+        <nav>
+            <a href="#" class="active">Dashboard</a>
+            <a href="#">Products</a>
+            <a href="#">Sales</a>
+            <a href="#">Inventory</a>
+            <a href="#">Reports</a>
+            <a href="#">Settings</a>
+        </nav>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div>
+                <h1>Dashboard</h1>
+                <p>Welcome back! Here's your business overview.</p>
+            </div>
+
+            <div class="user">
+                <div class="avatar">SW</div>
+
+                <div>
+                    <strong>Shedrack Waema</strong>
+                    <small>Administrator</small>
+                </div>
+            </div>
+
+        </header>
+
+
+        <!-- STATISTICS -->
+        <section class="stats">
+
+            <div class="stat-card">
+                <div>
+                    <span>Total Products</span>
+                    <h2 id="productCount">0</h2>
+                </div>
+
+                <div class="icon">📦</div>
+            </div>
+
+
+            <div class="stat-card">
+                <div>
+                    <span>Total Stock</span>
+                    <h2 id="stockCount">0</h2>
+                </div>
+
+                <div class="icon">📊</div>
+            </div>
+
+
+            <div class="stat-card">
+                <div>
+                    <span>Total Sales</span>
+                    <h2 id="salesTotal">KSh 0</h2>
+                </div>
+
+                <div class="icon">💰</div>
+            </div>
+
+
+            <div class="stat-card">
+                <div>
+                    <span>Customers</span>
+                    <h2 id="customerCount">0</h2>
+                </div>
+
+                <div class="icon">👥</div>
+            </div>
+
+        </section>
+
+
+        <!-- PRODUCT SECTION -->
+        <section class="content-card">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Products</h2>
+                    <p>Manage your business products and inventory.</p>
+                </div>
+
+                <button class="primary-btn" onclick="openProductForm()">
+                    + Add Product
+                </button>
+
+            </div>
+
+
+            <!-- PRODUCT FORM -->
+
+            <div id="productForm" class="product-form hidden">
+
+                <input
+                    type="text"
+                    id="productName"
+                    placeholder="Product name"
+                >
+
+                <input
+                    type="number"
+                    id="productPrice"
+                    placeholder="Price (KSh)"
+                >
+
+                <input
+                    type="number"
+                    id="productStock"
+                    placeholder="Stock quantity"
+                >
+
+                <button class="primary-btn" onclick="addProduct()">
+                    Save Product
+                </button>
+
+                <button class="cancel-btn" onclick="closeProductForm()">
+                    Cancel
+                </button>
+
+            </div>
+
+
+            <!-- SEARCH -->
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="searchProduct"
+                    placeholder="Search products..."
+                    onkeyup="searchProducts()"
+                >
+
+            </div>
+
+
+            <!-- PRODUCT TABLE -->
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>#</th>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="productTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
