@@ -364,6 +364,126 @@
             </div>
 
         </section>
+        <!-- SALES MANAGEMENT -->
+<section class="panel sales-section" id="sales">
+
+    <div class="panel-header">
+
+        <div>
+            <span class="eyebrow">
+                TRANSACTIONS
+            </span>
+
+            <h2>Sales Management</h2>
+
+            <p>
+                Record and monitor your business sales.
+            </p>
+        </div>
+
+        <button
+            class="primary-btn"
+            onclick="openSaleModal()">
+
+            <span>+</span>
+            Record Sale
+
+        </button>
+
+    </div>
+
+
+    <!-- SALES SUMMARY -->
+
+    <div class="sales-summary">
+
+        <div class="sales-summary-card">
+
+            <span>Today's Sales</span>
+
+            <strong id="todaySales">
+                KSh 0
+            </strong>
+
+        </div>
+
+
+        <div class="sales-summary-card">
+
+            <span>Total Transactions</span>
+
+            <strong id="transactionCount">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="sales-summary-card">
+
+            <span>Pending Payments</span>
+
+            <strong id="pendingPayments">
+                KSh 0
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- SALES TABLE -->
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>CUSTOMER</th>
+                    <th>PRODUCT</th>
+                    <th>QUANTITY</th>
+                    <th>TOTAL</th>
+                    <th>PAYMENT</th>
+                    <th>DATE</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="salesTable"></tbody>
+
+        </table>
+
+
+        <div
+            class="empty-state"
+            id="salesEmptyState">
+
+            <div>◈</div>
+
+            <h3>No sales recorded</h3>
+
+            <p>
+                Record your first sale to see transactions here.
+            </p>
+
+            <button
+                class="primary-btn"
+                onclick="openSaleModal()">
+
+                Record Sale
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+        
 
     </main>
 
