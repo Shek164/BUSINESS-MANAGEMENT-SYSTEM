@@ -886,7 +886,128 @@
 
 
     <script src="script.js"></script>
+<!-- CUSTOMER MODAL -->
 
+<div class="modal" id="customerModal" aria-hidden="true">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <div>
+                <span class="eyebrow">CUSTOMER MANAGEMENT</span>
+
+                <h2>Add New Customer</h2>
+
+                <p>
+                    Create a customer profile for your business.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="close-btn"
+                onclick="closeCustomerModal()"
+                aria-label="Close customer form">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <form id="customerForm">
+
+            <!-- NAME -->
+
+            <label>
+                Customer Name
+
+                <input
+                    type="text"
+                    id="customerName"
+                    placeholder="e.g. John Mwangi"
+                    required
+                >
+            </label>
+
+
+            <!-- PHONE -->
+
+            <label>
+                Phone Number
+
+                <input
+                    type="tel"
+                    id="customerPhone"
+                    placeholder="e.g. 0712345678"
+                    required
+                >
+            </label>
+
+
+            <!-- EMAIL -->
+
+            <label>
+                Email Address
+
+                <input
+                    type="email"
+                    id="customerEmail"
+                    placeholder="e.g. john@example.com"
+                >
+            </label>
+
+
+            <!-- STATUS -->
+
+            <label>
+                Customer Status
+
+                <select id="customerStatus">
+
+                    <option value="Active">
+                        Active
+                    </option>
+
+                    <option value="Inactive">
+                        Inactive
+                    </option>
+
+                </select>
+            </label>
+
+
+            <!-- ACTIONS -->
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-btn"
+                    onclick="closeCustomerModal()">
+
+                    Cancel
+
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+
+                    Save Customer
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+    
 </body>
 
 </html>
