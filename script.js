@@ -2773,3 +2773,554 @@ function printInvoice() {
 renderInvoices();
 
 updateInvoiceSummary();
+/* =========================================
+   PREMIUM REPORTS & ANALYTICS ENGINE
+========================================= */
+
+function updateReportsDashboard() {
+
+    /* -----------------------------------------
+       BASIC TOTALS
+    ----------------------------------------- */
+
+    const totalRevenue =
+        sales.reduce(
+            (sum, sale) =>
+                sum + Number(sale.total || 0),
+            0
+        );
+
+
+    const totalSales =
+        sales.length;
+
+
+    const totalCustomers =
+        customers.length;
+
+
+    const totalProducts =
+        products.length;
+
+
+    /* -----------------------------------------
+       UPDATE KPI CARDS
+    ----------------------------------------- */
+
+    const revenueElement =
+        document.getElementById(
+            "reportRevenue"
+        );
+
+    const salesElement =
+        document.getElementById(
+            "reportSales"
+        );
+
+    const customersElement =
+        document.getElementById(
+            "reportCustomers"
+        );
+
+    const productsElement =
+        document.getElementById(
+            "reportProducts"
+        );
+
+
+    if (revenueElement) {
+
+        revenueElement.textContent =
+            `KSh ${formatNumber(
+                totalRevenue
+            )}`;
+
+    }
+
+
+    if (salesElement) {
+
+        salesElement.textContent =
+            totalSales;
+
+    }
+
+
+    if (customersElement) {
+
+        customersElement.textContent =
+            totalCustomers;
+
+    }
+
+
+    if (productsElement) {
+
+        productsElement.textContent =
+            totalProducts;
+
+    }
+
+
+    /* -----------------------------------------
+       INVENTORY ANALYSIS
+    ----------------------------------------- */
+
+    let availableStock = 0;
+
+    let lowStock = 0;
+
+    let outOfStock = 0;
+
+
+    products.forEach(
+        product => {
+
+            const stock =
+                Number(
+                    product.stock || 0
+                );
+
+
+            if (stock <= 0) {
+
+                outOfStock++;
+
+            }
+
+            else if (stock <= 5) {
+
+                lowStock++;
+
+            }
+
+            else {
+
+                availableStock++;
+
+            }
+
+        }
+    );
+
+
+    const availableElement =
+        document.getElementById(
+            "reportAvailableStock"
+        );
+
+    const lowElement =
+        document.getElementById(
+            "reportLowStock"
+        );
+
+    const outElement =
+        document.getElementById(
+            "reportOutOfStock"
+        );
+
+
+    if (availableElement)
+        availableElement.textContent =
+            availableStock;
+
+
+    if (lowElement)
+        lowElement.textContent =
+            lowStock;
+
+
+    if (outElement)
+        outElement.textContent =
+            outOfStock;
+
+
+    /* -----------------------------------------
+       SALES CHART
+    ----------------------------------------- */
+
+    renderReportSalesChart();
+
+
+    /* -----------------------------------------
+       TOP PRODUCTS
+    ----------------------------------------- */
+
+    renderTopProducts();
+
+}
+
+
+/* =========================================
+   SALES PERFORMANCE CHART
+========================================= */
+
+function renderReportSalesChart() {
+
+    const chart =
+        document.getElementById(
+            "reportSalesChart"
+        );
+
+
+    if (!chart) return;
+
+
+    chart.innerHTML = "";
+
+
+    /* LAST 7 DAYS */
+
+    const days = [];
+
+
+    for (
+        let i = 6;
+        i >= 0;
+        i--
+    ) {
+
+        const date =
+            new Date();
+
+        date.setDate(
+            date.getDate() - i
+        );
+
+
+        days.push({
+            date: date,
+            label: date.toLocaleDateString(
+                "en-KE",
+                {
+                    weekday: "short"
+                }
+            ),
+            revenue: 0
+        });
+
+    }
+
+
+    /* CALCULATE REVENUE */
+
+    sales.forEach(
+        sale => {
+
+            const saleDate =
+                new Date(
+                    sale.date
+                );
+
+
+            const day =
+                days.find(
+                    item =>
+                        item.date.toDateString() ===
+                        saleDate.toDateString()
+                );
+
+
+            if (day) {
+
+                day.revenue +=
+                    Number(
+                        sale.total || 0
+                    );
+
+            }
+
+        }
+    );
+
+
+    const maxRevenue =
+        Math.max(
+            ...days.map(
+                day => day.revenue
+            ),
+            1
+        );
+
+
+    /* CREATE BARS */
+
+    days.forEach(
+        day => {
+
+            const wrapper =
+                document.createElement(
+                    "div"
+                );
+
+
+            wrapper.style.cssText = `
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-end;
+                height: 100%;
+                gap: 8px;
+            `;
+
+
+            const value =
+                document.createElement(
+                    "span"
+                );
+
+
+            value.textContent =
+                `KSh ${formatNumber(
+                    day.revenue
+                )}`;
+
+
+            value.style.cssText = `
+                font-size: 10px;
+                opacity: 0.6;
+                white-space: nowrap;
+            `;
+
+
+            const bar =
+                document.createElement(
+                    "div"
+                );
+
+
+            const height =
+                day.revenue > 0
+                    ? Math.max(
+                        (day.revenue /
+                            maxRevenue) *
+                            190,
+                        12
+                    )
+                    : 6;
+
+
+            bar.className =
+                "chart-bar";
+
+
+            bar.style.height =
+                `${height}px`;
+
+
+            bar.title =
+                `${day.label}: KSh ${formatNumber(
+                    day.revenue
+                )}`;
+
+
+            const label =
+                document.createElement(
+                    "span"
+                );
+
+
+            label.textContent =
+                day.label;
+
+
+            label.style.cssText = `
+                font-size: 11px;
+                opacity: 0.6;
+            `;
+
+
+            wrapper.appendChild(
+                value
+            );
+
+            wrapper.appendChild(
+                bar
+            );
+
+            wrapper.appendChild(
+                label
+            );
+
+
+            chart.appendChild(
+                wrapper
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   TOP SELLING PRODUCTS
+========================================= */
+
+function renderTopProducts() {
+
+    const table =
+        document.getElementById(
+            "topProductsTable"
+        );
+
+
+    const emptyState =
+        document.getElementById(
+            "topProductsEmpty"
+        );
+
+
+    if (!table) return;
+
+
+    table.innerHTML = "";
+
+
+    const productStats = {};
+
+
+    /* CALCULATE PRODUCT SALES */
+
+    sales.forEach(
+        sale => {
+
+            const productName =
+                sale.productName ||
+                "Unknown Product";
+
+
+            if (
+                !productStats[
+                    productName
+                ]
+            ) {
+
+                productStats[
+                    productName
+                ] = {
+
+                    quantity: 0,
+
+                    revenue: 0
+
+                };
+
+            }
+
+
+            productStats[
+                productName
+            ].quantity +=
+                Number(
+                    sale.quantity || 0
+                );
+
+
+            productStats[
+                productName
+            ].revenue +=
+                Number(
+                    sale.total || 0
+                );
+
+        }
+    );
+
+
+    const productsArray =
+        Object.entries(
+            productStats
+        )
+        .map(
+            ([name, data]) => ({
+
+                name: name,
+
+                quantity:
+                    data.quantity,
+
+                revenue:
+                    data.revenue
+
+            })
+        )
+        .sort(
+            (a, b) =>
+                b.revenue -
+                a.revenue
+        );
+
+
+    if (
+        productsArray.length === 0
+    ) {
+
+        emptyState.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    emptyState.style.display =
+        "none";
+
+
+    /* SHOW TOP 10 */
+
+    productsArray
+        .slice(0, 10)
+        .forEach(
+            product => {
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                row.innerHTML = `
+
+                    <td>
+                        <strong>
+                            ${escapeHTML(
+                                product.name
+                            )}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${formatNumber(
+                            product.quantity
+                        )}
+                    </td>
+
+                    <td>
+                        <strong>
+                            KSh ${formatNumber(
+                                product.revenue
+                            )}
+                        </strong>
+                    </td>
+
+                `;
+
+
+                table.appendChild(
+                    row
+                );
+
+            }
+        );
+
+}
+
+
+/* =========================================
+   INITIALIZE REPORTS
+========================================= */
+
+updateReportsDashboard();
