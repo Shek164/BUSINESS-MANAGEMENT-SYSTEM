@@ -1695,3 +1695,514 @@ if (customerSearch) {
 renderCustomers();
 
 updateCustomerSummary();
+/* =====================================================
+   INVOICE MANAGEMENT
+===================================================== */
+
+let invoices =
+    JSON.parse(
+        localStorage.getItem("bizmanager_invoices")
+    ) || [];
+
+
+/* -----------------------------------------
+   CREATE INVOICE FROM LATEST SALE
+----------------------------------------- */
+
+function createInvoiceFromLatestSale() {
+
+    if (!sales || sales.length === 0) {
+
+        showToast(
+            "No Sales Available",
+            "Record a sale before creating an invoice.",
+            "!"
+        );
+
+        return;
+    }
+
+
+    const latestSale =
+        [...sales].sort(
+            (a, b) =>
+                new Date(b.date) -
+                new Date(a.date)
+        )[0];
+
+
+    openInvoice(latestSale);
+
+}
+
+
+/* -----------------------------------------
+   OPEN INVOICE
+----------------------------------------- */
+
+function openInvoice(sale) {
+
+    const invoiceId =
+        `INV-${String(
+            invoices.length + 1
+        ).padStart(6, "0")}`;
+
+
+    const customer =
+        customers.find(
+            item =>
+                item.name.toLowerCase() ===
+                (sale.customer || "").toLowerCase()
+        );
+
+
+    document.getElementById(
+        "invoiceNumber"
+    ).textContent = invoiceId;
+
+
+    document.getElementById(
+        "invoiceCustomer"
+    ).textContent =
+        sale.customer || "Walk-in Customer";
+
+
+    document.getElementById(
+        "invoiceCustomerPhone"
+    ).textContent =
+        customer
+            ? customer.phone
+            : "—";
+
+
+    document.getElementById(
+        "invoiceDate"
+    ).textContent =
+        new Date(
+            sale.date
+        ).toLocaleDateString();
+
+
+    document.getElementById(
+        "invoiceProduct"
+    ).textContent =
+        sale.productName;
+
+
+    document.getElementById(
+        "invoiceQuantity"
+    ).textContent =
+        sale.quantity;
+
+
+    const unitPrice =
+        Number(sale.total || 0) /
+        Number(sale.quantity || 1);
+
+
+    document.getElementById(
+        "invoicePrice"
+    ).textContent =
+        `KSh ${formatNumber(unitPrice)}`;
+
+
+    document.getElementById(
+        "invoiceTotal"
+    ).textContent =
+        `KSh ${formatNumber(sale.total)}`;
+
+
+    document.getElementById(
+        "invoiceGrandTotal"
+    ).textContent =
+        `KSh ${formatNumber(sale.total)}`;
+
+
+    document.getElementById(
+        "invoicePayment"
+    ).textContent =
+        sale.payment || "—";
+
+
+    const invoice = {
+
+        id: invoiceId,
+
+        saleId: sale.id,
+
+        customer:
+            sale.customer ||
+            "Walk-in Customer",
+
+        amount:
+            Number(sale.total || 0),
+
+        payment:
+            sale.payment,
+
+        date:
+            sale.date
+
+    };
+
+
+    const existing =
+        invoices.find(
+            item =>
+                item.saleId === sale.id
+        );
+
+
+    if (!existing) {
+
+        invoices.unshift(invoice);
+
+        localStorage.setItem(
+            "bizmanager_invoices",
+            JSON.stringify(invoices)
+        );
+
+    }
+
+
+    renderInvoices();
+
+    updateInvoiceSummary();
+
+
+    const modal =
+        document.getElementById(
+            "invoiceModal"
+        );
+
+
+    modal.classList.add("active");
+
+    modal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+}
+
+
+/* -----------------------------------------
+   CLOSE INVOICE
+----------------------------------------- */
+
+function closeInvoiceModal() {
+
+    const modal =
+        document.getElementById(
+            "invoiceModal"
+        );
+
+
+    modal.classList.remove("active");
+
+    modal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+}
+
+
+/* -----------------------------------------
+   RENDER INVOICES
+----------------------------------------- */
+
+function renderInvoices() {
+
+    const table =
+        document.getElementById(
+            "invoicesTable"
+        );
+
+    const empty =
+        document.getElementById(
+            "invoicesEmptyState"
+        );
+
+
+    if (!table) return;
+
+
+    table.innerHTML = "";
+
+
+    if (invoices.length === 0) {
+
+        empty.style.display =
+            "block";
+
+        return;
+    }
+
+
+    empty.style.display =
+        "none";
+
+
+    invoices.forEach(invoice => {
+
+        const row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+
+            <td>
+                <strong>
+                    ${escapeHTML(invoice.id)}
+                </strong>
+            </td>
+
+            <td>
+                ${escapeHTML(invoice.customer)}
+            </td>
+
+            <td>
+                <strong>
+                    KSh ${formatNumber(
+                        invoice.amount
+                    )}
+                </strong>
+            </td>
+
+            <td>
+                <span class="stock-badge available">
+                    ${escapeHTML(
+                        invoice.payment || "Paid"
+                    )}
+                </span>
+            </td>
+
+            <td>
+                ${new Date(
+                    invoice.date
+                ).toLocaleDateString()}
+            </td>
+
+            <td>
+
+                <button
+                    class="table-action"
+                    onclick="openInvoiceById('${invoice.id}')"
+                    title="View invoice">
+
+                    🧾
+
+                </button>
+
+            </td>
+
+        `;
+
+
+        table.appendChild(row);
+
+    });
+
+}
+
+
+/* -----------------------------------------
+   OPEN EXISTING INVOICE
+----------------------------------------- */
+
+function openInvoiceById(invoiceId) {
+
+    const invoice =
+        invoices.find(
+            item =>
+                item.id === invoiceId
+        );
+
+
+    if (!invoice) return;
+
+
+    const sale =
+        sales.find(
+            item =>
+                item.id === invoice.saleId
+        );
+
+
+    if (!sale) {
+
+        showToast(
+            "Sale Not Found",
+            "The original sale could not be found.",
+            "!"
+        );
+
+        return;
+    }
+
+
+    openInvoice(sale);
+
+}
+
+
+/* -----------------------------------------
+   INVOICE SUMMARY
+----------------------------------------- */
+
+function updateInvoiceSummary() {
+
+    const total =
+        invoices.length;
+
+
+    const paid =
+        invoices.filter(
+            invoice =>
+                invoice.payment &&
+                invoice.payment.toLowerCase()
+                    .includes("paid")
+        ).length;
+
+
+    const billed =
+        invoices.reduce(
+            (sum, invoice) =>
+                sum +
+                Number(
+                    invoice.amount || 0
+                ),
+            0
+        );
+
+
+    const totalElement =
+        document.getElementById(
+            "totalInvoices"
+        );
+
+    const paidElement =
+        document.getElementById(
+            "paidInvoices"
+        );
+
+    const billedElement =
+        document.getElementById(
+            "totalBilled"
+        );
+
+
+    if (totalElement)
+        totalElement.textContent =
+            total;
+
+
+    if (paidElement)
+        paidElement.textContent =
+            paid;
+
+
+    if (billedElement)
+        billedElement.textContent =
+            `KSh ${formatNumber(billed)}`;
+
+}
+
+
+/* -----------------------------------------
+   PRINT INVOICE
+----------------------------------------- */
+
+function printInvoice() {
+
+    const invoiceContent =
+        document.getElementById(
+            "printInvoice"
+        ).innerHTML;
+
+
+    const printWindow =
+        window.open(
+            "",
+            "_blank",
+            "width=900,height=700"
+        );
+
+
+    printWindow.document.write(`
+
+        <!DOCTYPE html>
+
+        <html>
+
+        <head>
+
+            <title>Invoice</title>
+
+            <style>
+
+                body {
+                    font-family:
+                        Arial,
+                        sans-serif;
+
+                    padding: 40px;
+
+                    color: #111827;
+                }
+
+                table {
+                    width: 100%;
+                    border-collapse:
+                        collapse;
+                }
+
+                th {
+                    background:
+                        #f1f5f9;
+
+                    text-align:
+                        left;
+
+                    padding: 12px;
+                }
+
+                td {
+                    padding: 12px;
+
+                    border-bottom:
+                        1px solid #e5e7eb;
+                }
+
+            </style>
+
+        </head>
+
+        <body>
+
+            ${invoiceContent}
+
+        </body>
+
+        </html>
+
+    `);
+
+
+    printWindow.document.close();
+
+    printWindow.focus();
+
+    printWindow.print();
+
+}
+
+
+/* -----------------------------------------
+   INITIALIZE INVOICES
+----------------------------------------- */
+
+renderInvoices();
+
+updateInvoiceSummary();
