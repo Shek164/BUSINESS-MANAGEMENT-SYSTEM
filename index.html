@@ -172,7 +172,356 @@
                 </div>
 
             </article>
+<!-- =========================================
+     PREMIUM BUSINESS ANALYTICS
+========================================= -->
 
+<section class="panel analytics-dashboard">
+
+    <div class="panel-header">
+
+        <div>
+            <span class="eyebrow">BUSINESS ANALYTICS</span>
+
+            <h2>Business Overview</h2>
+
+            <p>
+                Monitor your sales, revenue, inventory and customer activity.
+            </p>
+        </div>
+
+        <div class="analytics-period">
+            <span>Live Data</span>
+            <span class="live-dot"></span>
+        </div>
+
+    </div>
+
+
+    <!-- ANALYTICS GRID -->
+
+    <div class="analytics-grid">
+
+        <!-- REVENUE -->
+
+        <div class="analytics-card revenue-card">
+
+            <div class="analytics-card-top">
+
+                <div>
+                    <span>Total Revenue</span>
+
+                    <h3 id="analyticsRevenue">
+                        KSh 0
+                    </h3>
+                </div>
+
+                <div class="analytics-icon">
+                    💰
+                </div>
+
+            </div>
+
+            <div class="analytics-footer">
+                <span>From recorded sales</span>
+            </div>
+
+        </div>
+
+
+        <!-- SALES -->
+
+        <div class="analytics-card">
+
+            <div class="analytics-card-top">
+
+                <div>
+                    <span>Total Sales</span>
+
+                    <h3 id="analyticsSales">
+                        0
+                    </h3>
+                </div>
+
+                <div class="analytics-icon">
+                    📈
+                </div>
+
+            </div>
+
+            <div class="analytics-footer">
+                <span>Completed transactions</span>
+            </div>
+
+        </div>
+
+
+        <!-- CUSTOMERS -->
+
+        <div class="analytics-card">
+
+            <div class="analytics-card-top">
+
+                <div>
+                    <span>Customers</span>
+
+                    <h3 id="analyticsCustomers">
+                        0
+                    </h3>
+                </div>
+
+                <div class="analytics-icon">
+                    👥
+                </div>
+
+            </div>
+
+            <div class="analytics-footer">
+                <span>Registered customers</span>
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCTS -->
+
+        <div class="analytics-card">
+
+            <div class="analytics-card-top">
+
+                <div>
+                    <span>Products</span>
+
+                    <h3 id="analyticsProducts">
+                        0
+                    </h3>
+                </div>
+
+                <div class="analytics-icon">
+                    📦
+                </div>
+
+            </div>
+
+            <div class="analytics-footer">
+                <span>Products in inventory</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CHART + INVENTORY -->
+
+    <div class="dashboard-analysis-grid">
+
+        <!-- SALES ACTIVITY -->
+
+        <div class="analysis-panel">
+
+            <div class="analysis-header">
+
+                <div>
+
+                    <span class="eyebrow">
+                        SALES PERFORMANCE
+                    </span>
+
+                    <h3>Recent Sales Activity</h3>
+
+                </div>
+
+                <span class="analysis-label">
+                    Last 7 Days
+                </span>
+
+            </div>
+
+            <div class="sales-chart">
+
+                <div class="chart-bars" id="salesChart">
+
+                    <div class="chart-empty">
+                        No sales data yet
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- INVENTORY HEALTH -->
+
+        <div class="analysis-panel">
+
+            <div class="analysis-header">
+
+                <div>
+
+                    <span class="eyebrow">
+                        INVENTORY
+                    </span>
+
+                    <h3>Inventory Health</h3>
+
+                </div>
+
+            </div>
+
+
+            <div class="inventory-health">
+
+                <div class="health-item">
+
+                    <div class="health-info">
+
+                        <span>Available Stock</span>
+
+                        <strong id="availableStock">
+                            0
+                        </strong>
+
+                    </div>
+
+                    <div class="health-bar">
+
+                        <span
+                            id="availableStockBar"
+                            class="health-fill available-fill">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="health-item">
+
+                    <div class="health-info">
+
+                        <span>Low Stock</span>
+
+                        <strong id="lowStock">
+                            0
+                        </strong>
+
+                    </div>
+
+                    <div class="health-bar">
+
+                        <span
+                            id="lowStockBar"
+                            class="health-fill low-fill">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="health-item">
+
+                    <div class="health-info">
+
+                        <span>Out of Stock</span>
+
+                        <strong id="outOfStock">
+                            0
+                        </strong>
+
+                    </div>
+
+                    <div class="health-bar">
+
+                        <span
+                            id="outOfStockBar"
+                            class="health-fill out-fill">
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RECENT TRANSACTIONS -->
+
+    <div class="recent-transactions">
+
+        <div class="analysis-header">
+
+            <div>
+
+                <span class="eyebrow">
+                    TRANSACTIONS
+                </span>
+
+                <h3>Recent Sales</h3>
+
+            </div>
+
+            <button
+                class="secondary-btn"
+                onclick="showSection('sales')">
+
+                View All
+
+            </button>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Customer</th>
+                        <th>Product</th>
+                        <th>Amount</th>
+                        <th>Payment</th>
+                        <th>Date</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="recentSalesTable">
+
+                </tbody>
+
+            </table>
+
+            <div
+                class="empty-state"
+                id="recentSalesEmpty">
+
+                <div>📊</div>
+
+                <h3>No transactions yet</h3>
+
+                <p>
+                    Your recent sales will appear here.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
             <!-- Products -->
             <article class="metric-card">
