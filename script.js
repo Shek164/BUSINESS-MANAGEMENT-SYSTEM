@@ -784,7 +784,29 @@ const saleQuantity =
 
 const saleTotal =
     document.getElementById("saleTotal");
+/* POPULATE CUSTOMER SELECT */
 
+function populateSaleCustomers() {
+
+    saleCustomer.innerHTML =
+        `<option value="">
+            Select customer
+        </option>`;
+
+    customers.forEach(customer => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = customer.id;
+
+        option.textContent =
+            `${customer.name} — ${customer.phone}`;
+
+        saleCustomer.appendChild(option);
+
+    });
+}
 
 /* OPEN SALE MODAL */
 
