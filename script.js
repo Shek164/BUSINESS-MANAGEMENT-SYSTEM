@@ -1289,7 +1289,7 @@ function openCustomerModal() {
 
 function closeCustomerModal() {
 
-    customerModal.classList.remove("active");
+    customerModal.classList.remove("show");
 
     customerModal.setAttribute(
         "aria-hidden",
