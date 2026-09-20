@@ -1200,3 +1200,498 @@ renderSales();
 updateSalesSummary();
 
 updateSalesRevenue();
+/* =========================================
+   CUSTOMER MANAGEMENT
+========================================= */
+
+let customers =
+    JSON.parse(
+        localStorage.getItem("bizmanager_customers")
+    ) || [];
+
+
+/* -----------------------------------------
+   CUSTOMER ELEMENTS
+----------------------------------------- */
+
+const customerModal =
+    document.getElementById("customerModal");
+
+const customerForm =
+    document.getElementById("customerForm");
+
+const customerSearch =
+    document.getElementById("customerSearch");
+
+
+/* -----------------------------------------
+   OPEN CUSTOMER MODAL
+----------------------------------------- */
+
+function openCustomerModal() {
+
+    customerForm.reset();
+
+    document
+        .getElementById("customerStatus")
+        .value = "Active";
+
+    customerModal.classList.add("active");
+
+    customerModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+}
+
+
+/* -----------------------------------------
+   CLOSE CUSTOMER MODAL
+----------------------------------------- */
+
+function closeCustomerModal() {
+
+    customerModal.classList.remove("active");
+
+    customerModal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+}
+
+
+/* -----------------------------------------
+   SAVE CUSTOMER
+----------------------------------------- */
+
+customerForm.addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+
+        const name =
+            document
+                .getElementById("customerName")
+                .value
+                .trim();
+
+        const phone =
+            document
+                .getElementById("customerPhone")
+                .value
+                .trim();
+
+        const email =
+            document
+                .getElementById("customerEmail")
+                .value
+                .trim();
+
+        const status =
+            document
+                .getElementById("customerStatus")
+                .value;
+
+
+        /* BASIC VALIDATION */
+
+        if (!name || !phone) {
+
+            showToast(
+                "Missing Information",
+                "Please enter the customer name and phone number.",
+                "!"
+            );
+
+            return;
+        }
+
+
+        /* CHECK FOR DUPLICATE PHONE */
+
+        const existingCustomer =
+            customers.find(
+                customer =>
+                    customer.phone === phone
+            );
+
+
+        if (existingCustomer) {
+
+            showToast(
+                "Customer Exists",
+                "A customer with this phone number already exists.",
+                "!"
+            );
+
+            return;
+        }
+
+
+        /* CREATE CUSTOMER */
+
+        const newCustomer = {
+
+            id: Date.now(),
+
+            name: name,
+
+            phone: phone,
+
+            email: email,
+
+            status: status,
+
+            totalPurchases: 0,
+
+            createdAt:
+                new Date().toISOString()
+
+        };
+
+
+        /* ADD CUSTOMER */
+
+        customers.unshift(newCustomer);
+
+
+        /* SAVE TO LOCAL STORAGE */
+
+        localStorage.setItem(
+            "bizmanager_customers",
+            JSON.stringify(customers)
+        );
+
+
+        /* UPDATE DISPLAY */
+
+        renderCustomers();
+
+        updateCustomerSummary();
+
+
+        /* CLOSE MODAL */
+
+        closeCustomerModal();
+
+
+        /* SUCCESS MESSAGE */
+
+        showToast(
+            "Customer Added",
+            `${name} has been added successfully.`,
+            "✓"
+        );
+
+    }
+);
+
+
+/* -----------------------------------------
+   RENDER CUSTOMERS
+----------------------------------------- */
+
+function renderCustomers(
+    searchTerm = ""
+) {
+
+    const table =
+        document.getElementById(
+            "customersTable"
+        );
+
+    const emptyState =
+        document.getElementById(
+            "customersEmptyState"
+        );
+
+
+    if (!table) return;
+
+
+    table.innerHTML = "";
+
+
+    const search =
+        searchTerm
+            .toLowerCase()
+            .trim();
+
+
+    const filteredCustomers =
+        customers.filter(customer => {
+
+            return (
+                customer.name
+                    .toLowerCase()
+                    .includes(search)
+
+                ||
+
+                customer.phone
+                    .toLowerCase()
+                    .includes(search)
+
+                ||
+
+                customer.email
+                    .toLowerCase()
+                    .includes(search)
+            );
+
+        });
+
+
+    if (filteredCustomers.length === 0) {
+
+        emptyState.style.display =
+            "block";
+
+        return;
+    }
+
+
+    emptyState.style.display =
+        "none";
+
+
+    filteredCustomers.forEach(
+        customer => {
+
+            const row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+
+                <td>
+                    <div class="customer-cell">
+
+                        <div class="small-avatar">
+                            ${getInitials(customer.name)}
+                        </div>
+
+                        <strong>
+                            ${escapeHTML(customer.name)}
+                        </strong>
+
+                    </div>
+                </td>
+
+
+                <td>
+                    ${escapeHTML(customer.phone)}
+                </td>
+
+
+                <td>
+                    ${customer.email
+                        ? escapeHTML(customer.email)
+                        : "—"}
+                </td>
+
+
+                <td>
+                    KSh ${formatNumber(
+                        customer.totalPurchases
+                    )}
+                </td>
+
+
+                <td>
+
+                    <span class="stock-badge ${
+                        customer.status === "Active"
+                            ? "available"
+                            : "low"
+                    }">
+
+                        ${customer.status}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    <button
+                        class="table-action"
+                        onclick="deleteCustomer(${customer.id})"
+                        title="Delete customer">
+
+                        🗑
+
+                    </button>
+
+                </td>
+
+            `;
+
+
+            table.appendChild(row);
+
+        }
+    );
+
+}
+
+
+/* -----------------------------------------
+   CUSTOMER INITIALS
+----------------------------------------- */
+
+function getInitials(name) {
+
+    return name
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(
+            word =>
+                word
+                    .charAt(0)
+                    .toUpperCase()
+        )
+        .join("");
+
+}
+
+
+/* -----------------------------------------
+   DELETE CUSTOMER
+----------------------------------------- */
+
+function deleteCustomer(id) {
+
+    const customer =
+        customers.find(
+            item => item.id === id
+        );
+
+
+    if (!customer) return;
+
+
+    const confirmed =
+        confirm(
+            `Delete ${customer.name} from your customers?`
+        );
+
+
+    if (!confirmed) return;
+
+
+    customers =
+        customers.filter(
+            item => item.id !== id
+        );
+
+
+    localStorage.setItem(
+        "bizmanager_customers",
+        JSON.stringify(customers)
+    );
+
+
+    renderCustomers();
+
+    updateCustomerSummary();
+
+
+    showToast(
+        "Customer Deleted",
+        "The customer was removed successfully.",
+        "✓"
+    );
+
+}
+
+
+/* -----------------------------------------
+   CUSTOMER SUMMARY
+----------------------------------------- */
+
+function updateCustomerSummary() {
+
+    const total =
+        customers.length;
+
+
+    const active =
+        customers.filter(
+            customer =>
+                customer.status === "Active"
+        ).length;
+
+
+    const salesTotal =
+        customers.reduce(
+            (sum, customer) =>
+                sum + Number(
+                    customer.totalPurchases || 0
+                ),
+            0
+        );
+
+
+    const totalElement =
+        document.getElementById(
+            "totalCustomers"
+        );
+
+    const activeElement =
+        document.getElementById(
+            "activeCustomers"
+        );
+
+    const salesElement =
+        document.getElementById(
+            "customerSalesTotal"
+        );
+
+
+    if (totalElement)
+        totalElement.textContent = total;
+
+
+    if (activeElement)
+        activeElement.textContent = active;
+
+
+    if (salesElement)
+        salesElement.textContent =
+            `KSh ${formatNumber(salesTotal)}`;
+
+}
+
+
+/* -----------------------------------------
+   CUSTOMER SEARCH
+----------------------------------------- */
+
+if (customerSearch) {
+
+    customerSearch.addEventListener(
+        "input",
+        function() {
+
+            renderCustomers(
+                this.value
+            );
+
+        }
+    );
+
+}
+
+
+/* -----------------------------------------
+   INITIALIZE CUSTOMERS
+----------------------------------------- */
+
+renderCustomers();
+
+updateCustomerSummary();
