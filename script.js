@@ -758,3 +758,445 @@ function formatNumber(value) {
 renderProducts();
 
 updateDashboard();
+/* =========================================
+   SALES MANAGEMENT
+========================================= */
+
+let sales =
+    JSON.parse(
+        localStorage.getItem("bizmanager_sales")
+    ) || [];
+
+
+const saleModal =
+    document.getElementById("saleModal");
+
+const saleForm =
+    document.getElementById("saleForm");
+
+const saleProduct =
+    document.getElementById("saleProduct");
+
+const saleQuantity =
+    document.getElementById("saleQuantity");
+
+const saleTotal =
+    document.getElementById("saleTotal");
+
+
+/* OPEN SALE MODAL */
+
+function openSaleModal() {
+
+    populateSaleProducts();
+
+    saleForm.reset();
+
+    saleQuantity.value = 1;
+
+    calculateSaleTotal();
+
+    saleModal.classList.add("active");
+
+    saleModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+}
+
+
+/* CLOSE SALE MODAL */
+
+function closeSaleModal() {
+
+    saleModal.classList.remove("active");
+
+    saleModal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+}
+
+
+/* POPULATE PRODUCT SELECT */
+
+function populateSaleProducts() {
+
+    saleProduct.innerHTML =
+        `<option value="">
+            Select product
+        </option>`;
+
+    products.forEach(product => {
+
+        if (product.stock > 0) {
+
+            const option =
+                document.createElement("option");
+
+            option.value = product.id;
+
+            option.textContent =
+                `${product.name} — KSh ${formatNumber(product.price)} (${product.stock} available)`;
+
+            saleProduct.appendChild(option);
+        }
+
+    });
+}
+
+
+/* CALCULATE SALE TOTAL */
+
+function calculateSaleTotal() {
+
+    const selectedProduct =
+        products.find(
+            product =>
+                String(product.id) ===
+                String(saleProduct.value)
+        );
+
+    if (!selectedProduct) {
+
+        saleTotal.textContent = "KSh 0";
+
+        return;
+    }
+
+    const quantity =
+        Number(saleQuantity.value) || 1;
+
+    const total =
+        selectedProduct.price * quantity;
+
+    saleTotal.textContent =
+        `KSh ${formatNumber(total)}`;
+}
+
+
+/* PRODUCT CHANGE */
+
+saleProduct.addEventListener(
+    "change",
+    calculateSaleTotal
+);
+
+
+/* QUANTITY CHANGE */
+
+saleQuantity.addEventListener(
+    "input",
+    calculateSaleTotal
+);
+
+
+/* SAVE SALE */
+
+saleForm.addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+        const customer =
+            document
+                .getElementById("saleCustomer")
+                .value
+                .trim();
+
+        const product =
+            products.find(
+                item =>
+                    String(item.id) ===
+                    String(saleProduct.value)
+            );
+
+        const quantity =
+            Number(saleQuantity.value);
+
+        const payment =
+            document
+                .getElementById("salePayment")
+                .value;
+
+
+        if (!product) {
+
+            showToast(
+                "Error",
+                "Please select a product.",
+                "!"
+            );
+
+            return;
+        }
+
+
+        if (quantity <= 0) {
+
+            showToast(
+                "Error",
+                "Quantity must be at least 1.",
+                "!"
+            );
+
+            return;
+        }
+
+
+        if (quantity > product.stock) {
+
+            showToast(
+                "Insufficient Stock",
+                `Only ${product.stock} units are available.`,
+                "!"
+            );
+
+            return;
+        }
+
+
+        const total =
+            product.price * quantity;
+
+
+        const newSale = {
+
+            id: Date.now(),
+
+            customer: customer,
+
+            productId: product.id,
+
+            productName: product.name,
+
+            quantity: quantity,
+
+            total: total,
+
+            payment: payment,
+
+            date: new Date().toISOString()
+
+        };
+
+
+        sales.unshift(newSale);
+
+
+        /* REDUCE INVENTORY */
+
+        product.stock -= quantity;
+
+        saveProducts();
+
+
+        /* SAVE SALES */
+
+        localStorage.setItem(
+            "bizmanager_sales",
+            JSON.stringify(sales)
+        );
+
+
+        renderSales();
+
+        updateSalesSummary();
+
+        updateDashboard();
+
+
+        closeSaleModal();
+
+
+        showToast(
+            "Sale Recorded",
+            "The transaction was successfully saved.",
+            "✓"
+        );
+
+    }
+);
+
+
+/* RENDER SALES */
+
+function renderSales() {
+
+    const table =
+        document.getElementById("salesTable");
+
+    const emptyState =
+        document.getElementById("salesEmptyState");
+
+
+    table.innerHTML = "";
+
+
+    if (sales.length === 0) {
+
+        emptyState.style.display = "block";
+
+        return;
+    }
+
+
+    emptyState.style.display = "none";
+
+
+    sales.forEach(sale => {
+
+        const row =
+            document.createElement("tr");
+
+
+        const date =
+            new Date(sale.date);
+
+
+        const formattedDate =
+            date.toLocaleDateString(
+                "en-KE",
+                {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
+
+
+        const paymentClass =
+            sale.payment === "Paid"
+                ? "available"
+                : "low";
+
+
+        row.innerHTML = `
+
+            <td>
+                ${escapeHTML(sale.customer)}
+            </td>
+
+            <td>
+                ${escapeHTML(sale.productName)}
+            </td>
+
+            <td>
+                ${sale.quantity}
+            </td>
+
+            <td>
+                KSh ${formatNumber(sale.total)}
+            </td>
+
+            <td>
+                <span class="stock-badge ${paymentClass}">
+                    ${sale.payment}
+                </span>
+            </td>
+
+            <td>
+                ${formattedDate}
+            </td>
+
+        `;
+
+
+        table.appendChild(row);
+
+    });
+
+}
+
+
+/* SALES SUMMARY */
+
+function updateSalesSummary() {
+
+    const today =
+        new Date().toDateString();
+
+
+    const todayTotal =
+        sales
+            .filter(
+                sale =>
+                    new Date(sale.date)
+                        .toDateString() === today
+            )
+            .reduce(
+                (sum, sale) =>
+                    sum + sale.total,
+                0
+            );
+
+
+    const pendingTotal =
+        sales
+            .filter(
+                sale =>
+                    sale.payment === "Pending"
+            )
+            .reduce(
+                (sum, sale) =>
+                    sum + sale.total,
+                0
+            );
+
+
+    document.getElementById(
+        "todaySales"
+    ).textContent =
+        `KSh ${formatNumber(todayTotal)}`;
+
+
+    document.getElementById(
+        "transactionCount"
+    ).textContent =
+        sales.length;
+
+
+    document.getElementById(
+        "pendingPayments"
+    ).textContent =
+        `KSh ${formatNumber(pendingTotal)}`;
+
+}
+
+
+/* UPDATE REVENUE */
+
+function updateSalesRevenue() {
+
+    const totalRevenue =
+        sales.reduce(
+            (sum, sale) =>
+                sum + sale.total,
+            0
+        );
+
+
+    const revenueElement =
+        document.getElementById(
+            "salesTotal"
+        );
+
+
+    if (revenueElement) {
+
+        revenueElement.textContent =
+            `KSh ${formatNumber(totalRevenue)}`;
+
+    }
+
+}
+
+
+/* INITIALIZE SALES */
+
+renderSales();
+
+updateSalesSummary();
+
+updateSalesRevenue();
