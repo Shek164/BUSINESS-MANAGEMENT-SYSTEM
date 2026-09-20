@@ -601,7 +601,161 @@
 
     </div>
 
+<!-- SALE MODAL -->
 
+<div
+    class="modal"
+    id="saleModal"
+    aria-hidden="true">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <div>
+
+                <span class="eyebrow">
+                    SALES MANAGEMENT
+                </span>
+
+                <h2>
+                    Record New Sale
+                </h2>
+
+            </div>
+
+            <button
+                class="close-btn"
+                onclick="closeSaleModal()"
+                aria-label="Close">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <form id="saleForm">
+
+            <!-- CUSTOMER -->
+
+            <label>
+
+                Customer Name
+
+                <input
+                    type="text"
+                    id="saleCustomer"
+                    placeholder="e.g. John Mwangi"
+                    required
+                >
+
+            </label>
+
+
+            <!-- PRODUCT -->
+
+            <label>
+
+                Product
+
+                <select
+                    id="saleProduct"
+                    required>
+
+                    <option value="">
+                        Select product
+                    </option>
+
+                </select>
+
+            </label>
+
+
+            <div class="form-row">
+
+                <!-- QUANTITY -->
+
+                <label>
+
+                    Quantity
+
+                    <input
+                        type="number"
+                        id="saleQuantity"
+                        value="1"
+                        min="1"
+                        required
+                    >
+
+                </label>
+
+
+                <!-- PAYMENT -->
+
+                <label>
+
+                    Payment Status
+
+                    <select id="salePayment">
+
+                        <option value="Paid">
+                            Paid
+                        </option>
+
+                        <option value="Pending">
+                            Pending
+                        </option>
+
+                    </select>
+
+                </label>
+
+            </div>
+
+
+            <!-- TOTAL -->
+
+            <div class="sale-total-box">
+
+                <span>
+                    Sale Total
+                </span>
+
+                <strong id="saleTotal">
+                    KSh 0
+                </strong>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-btn"
+                    onclick="closeSaleModal()">
+
+                    Cancel
+
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+
+                    Save Sale
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
     <!-- TOAST -->
     <div
         class="toast"
