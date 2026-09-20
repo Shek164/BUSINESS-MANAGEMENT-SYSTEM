@@ -1297,28 +1297,23 @@ customerForm.addEventListener(
         event.preventDefault();
 
 
-        const name =
-            document
-                .getElementById("customerName")
-                .value
-                .trim();
+   const selectedCustomer =
+    customers.find(
+        customer =>
+            String(customer.id) ===
+            String(saleCustomer.value)
+    );
 
-        const phone =
-            document
-                .getElementById("customerPhone")
-                .value
-                .trim();
+if (!selectedCustomer) {
 
-        const email =
-            document
-                .getElementById("customerEmail")
-                .value
-                .trim();
+    showToast(
+        "Error",
+        "Please select a customer.",
+        "!"
+    );
 
-        const status =
-            document
-                .getElementById("customerStatus")
-                .value;
+    return;
+}
 
 
         /* BASIC VALIDATION */
