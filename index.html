@@ -1031,6 +1031,218 @@
     </div>
 
 </section>
+ <!-- =========================================
+     BUSINESS SETTINGS
+========================================= -->
+
+<section class="panel settings-section" id="settings">
+
+    <div class="panel-header">
+
+        <div>
+            <span class="eyebrow">SYSTEM CONFIGURATION</span>
+
+            <h2>Business Settings</h2>
+
+            <p>
+                Configure your business information and invoice preferences.
+            </p>
+        </div>
+
+    </div>
+
+
+    <form id="businessSettingsForm">
+
+        <div class="settings-grid">
+
+            <!-- BUSINESS INFORMATION -->
+
+            <div class="settings-card">
+
+                <div class="settings-card-header">
+
+                    <span class="settings-icon">
+                        🏢
+                    </span>
+
+                    <div>
+                        <h3>Business Information</h3>
+
+                        <p>
+                            Your business details.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <label>
+
+                    Business Name
+
+                    <input
+                        type="text"
+                        id="businessName"
+                        placeholder="e.g. Waema Enterprises"
+                        required
+                    >
+
+                </label>
+
+
+                <label>
+
+                    Phone Number
+
+                    <input
+                        type="tel"
+                        id="businessPhone"
+                        placeholder="e.g. 0712345678"
+                    >
+
+                </label>
+
+
+                <label>
+
+                    Email Address
+
+                    <input
+                        type="email"
+                        id="businessEmail"
+                        placeholder="e.g. business@example.com"
+                    >
+
+                </label>
+
+
+                <label>
+
+                    Business Location
+
+                    <input
+                        type="text"
+                        id="businessLocation"
+                        placeholder="e.g. Chuka, Kenya"
+                    >
+
+                </label>
+
+            </div>
+
+
+            <!-- INVOICE SETTINGS -->
+
+            <div class="settings-card">
+
+                <div class="settings-card-header">
+
+                    <span class="settings-icon">
+                        🧾
+                    </span>
+
+                    <div>
+
+                        <h3>Invoice Settings</h3>
+
+                        <p>
+                            Customize your invoices.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <label>
+
+                    Currency
+
+                    <select id="businessCurrency">
+
+                        <option value="KSh">
+                            KSh — Kenyan Shilling
+                        </option>
+
+                        <option value="USD">
+                            USD — US Dollar
+                        </option>
+
+                        <option value="EUR">
+                            EUR — Euro
+                        </option>
+
+                        <option value="GBP">
+                            GBP — British Pound
+                        </option>
+
+                    </select>
+
+                </label>
+
+
+                <label>
+
+                    Invoice Prefix
+
+                    <input
+                        type="text"
+                        id="invoicePrefix"
+                        placeholder="INV"
+                        maxlength="10"
+                    >
+
+                </label>
+
+
+                <label>
+
+                    Invoice Footer
+
+                    <textarea
+                        id="invoiceFooter"
+                        rows="4"
+                        placeholder="Thank you for your business."
+                    ></textarea>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- SAVE AREA -->
+
+        <div class="settings-actions">
+
+            <div>
+
+                <strong>
+                    Save your business configuration
+                </strong>
+
+                <p>
+                    These settings are stored locally on this device.
+                </p>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="primary-btn">
+
+                ✓ Save Settings
+
+            </button>
+
+        </div>
+
+    </form>
+
+</section>       
     </main>
 
 
