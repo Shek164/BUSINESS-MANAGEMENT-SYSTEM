@@ -812,6 +812,8 @@ function populateSaleCustomers() {
 
 function openSaleModal() {
 
+    populateSaleCustomers();
+
     populateSaleProducts();
 
     saleForm.reset();
