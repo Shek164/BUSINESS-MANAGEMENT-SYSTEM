@@ -1274,7 +1274,7 @@ function openCustomerModal() {
         .getElementById("customerStatus")
         .value = "Active";
 
-    customerModal.classList.add("active");
+    customerModal.classList.add("show");
 
     customerModal.setAttribute(
         "aria-hidden",
