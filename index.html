@@ -483,7 +483,116 @@
     </div>
 
 </section>
-        
+  <!-- CUSTOMERS MANAGEMENT -->
+<section class="panel customers-section" id="customers">
+
+    <div class="panel-header">
+
+        <div>
+            <span class="eyebrow">CUSTOMER MANAGEMENT</span>
+
+            <h2>Customers</h2>
+
+            <p>
+                Manage your customers and their business information.
+            </p>
+        </div>
+
+        <button
+            class="primary-btn"
+            onclick="openCustomerModal()">
+
+            + Add Customer
+
+        </button>
+
+    </div>
+
+
+    <!-- CUSTOMER SUMMARY -->
+
+    <div class="customer-summary">
+
+        <div class="customer-summary-card">
+            <span>Total Customers</span>
+            <strong id="totalCustomers">0</strong>
+        </div>
+
+        <div class="customer-summary-card">
+            <span>Active Customers</span>
+            <strong id="activeCustomers">0</strong>
+        </div>
+
+        <div class="customer-summary-card">
+            <span>Total Customer Sales</span>
+            <strong id="customerSalesTotal">KSh 0</strong>
+        </div>
+
+    </div>
+
+
+    <!-- CUSTOMER SEARCH -->
+
+    <div class="customer-search">
+
+        <input
+            type="search"
+            id="customerSearch"
+            placeholder="Search customers..."
+        >
+
+    </div>
+
+
+    <!-- CUSTOMER TABLE -->
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Customer</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Total Purchases</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="customersTable"></tbody>
+
+        </table>
+
+
+        <div
+            class="empty-state"
+            id="customersEmptyState">
+
+            <div>♙</div>
+
+            <h3>No customers yet</h3>
+
+            <p>
+                Add your first customer to start building your customer database.
+            </p>
+
+            <button
+                class="primary-btn"
+                onclick="openCustomerModal()">
+
+                + Add Customer
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>      
 
     </main>
 
