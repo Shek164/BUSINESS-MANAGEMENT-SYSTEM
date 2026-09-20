@@ -942,7 +942,93 @@
     </div>
 
 </section>      
+<!-- =========================================
+     INVOICES & RECEIPTS
+========================================= -->
 
+<section class="panel invoices-section" id="invoices">
+
+    <div class="panel-header">
+
+        <div>
+            <span class="eyebrow">BILLING MANAGEMENT</span>
+
+            <h2>Invoices & Receipts</h2>
+
+            <p>
+                Create, view and print professional customer invoices.
+            </p>
+        </div>
+
+        <button
+            class="primary-btn"
+            onclick="createInvoiceFromLatestSale()">
+
+            + Create Invoice
+
+        </button>
+
+    </div>
+
+
+    <div class="invoice-summary">
+
+        <div class="invoice-summary-card">
+            <span>Total Invoices</span>
+            <strong id="totalInvoices">0</strong>
+        </div>
+
+        <div class="invoice-summary-card">
+            <span>Paid Invoices</span>
+            <strong id="paidInvoices">0</strong>
+        </div>
+
+        <div class="invoice-summary-card">
+            <span>Total Billed</span>
+            <strong id="totalBilled">KSh 0</strong>
+        </div>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Invoice</th>
+                    <th>Customer</th>
+                    <th>Amount</th>
+                    <th>Payment</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="invoicesTable"></tbody>
+
+        </table>
+
+        <div
+            class="empty-state"
+            id="invoicesEmptyState">
+
+            <div>🧾</div>
+
+            <h3>No invoices yet</h3>
+
+            <p>
+                Create an invoice from a recorded sale.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
     </main>
 
 
