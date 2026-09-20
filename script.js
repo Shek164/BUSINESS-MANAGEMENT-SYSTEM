@@ -1741,7 +1741,63 @@ function createInvoiceFromLatestSale() {
 ----------------------------------------- */
 
 function openInvoice(sale) {
+/* BUSINESS INFORMATION */
 
+const invoiceBusinessName =
+    document.getElementById(
+        "invoiceBusinessName"
+    );
+
+const invoiceBusinessContact =
+    document.getElementById(
+        "invoiceBusinessContact"
+    );
+
+const invoiceBusinessLocation =
+    document.getElementById(
+        "invoiceBusinessLocation"
+    );
+
+const invoiceFooterText =
+    document.getElementById(
+        "invoiceFooterText"
+    );
+
+
+if (invoiceBusinessName) {
+
+    invoiceBusinessName.textContent =
+        businessSettings.name ||
+        "BIZMANAGER";
+
+}
+
+
+if (invoiceBusinessContact) {
+
+    invoiceBusinessContact.textContent =
+        businessSettings.phone ||
+        "+254743551445";
+
+}
+
+
+if (invoiceBusinessLocation) {
+
+    invoiceBusinessLocation.textContent =
+        businessSettings.location ||
+        "Kenya";
+
+}
+
+
+if (invoiceFooterText) {
+
+    invoiceFooterText.textContent =
+        businessSettings.invoiceFooter ||
+        "Thank you for your business.";
+
+}
     const invoiceId =
         `INV-${String(
             invoices.length + 1
