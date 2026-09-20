@@ -1,1 +1,186 @@
 
+let products = [];
+
+
+function openProductForm() {
+
+    document
+        .getElementById("productForm")
+        .classList.remove("hidden");
+
+}
+
+
+function closeProductForm() {
+
+    document
+        .getElementById("productForm")
+        .classList.add("hidden");
+
+}
+
+
+function addProduct() {
+
+    const name =
+        document.getElementById("productName").value.trim();
+
+    const price =
+        Number(document.getElementById("productPrice").value);
+
+    const stock =
+        Number(document.getElementById("productStock").value);
+
+
+    if (!name || price <= 0 || stock < 0) {
+
+        alert("Please enter valid product information.");
+
+        return;
+    }
+
+
+    const product = {
+
+        id: Date.now(),
+
+        name: name,
+
+        price: price,
+
+        stock: stock
+
+    };
+
+
+    products.push(product);
+
+
+    displayProducts();
+
+    updateDashboard();
+
+
+    document.getElementById("productName").value = "";
+
+    document.getElementById("productPrice").value = "";
+
+    document.getElementById("productStock").value = "";
+
+
+    closeProductForm();
+
+}
+
+
+function displayProducts(productList = products) {
+
+    const table =
+        document.getElementById("productTable");
+
+
+    table.innerHTML = "";
+
+
+    if (productList.length === 0) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="5">
+                    No products found.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    productList.forEach((product, index) => {
+
+        const row = document.createElement("tr");
+
+
+        row.innerHTML = `
+
+            <td>${index + 1}</td>
+
+            <td>${product.name}</td>
+
+            <td>KSh ${product.price.toLocaleString()}</td>
+
+            <td>${product.stock}</td>
+
+            <td>
+
+                <button onclick="deleteProduct(${product.id})">
+                    Delete
+                </button>
+
+            </td>
+
+        `;
+
+
+        table.appendChild(row);
+
+    });
+
+}
+
+
+function deleteProduct(id) {
+
+    products = products.filter(
+        product => product.id !== id
+    );
+
+
+    displayProducts();
+
+    updateDashboard();
+
+}
+
+
+function updateDashboard() {
+
+    document.getElementById("productCount").textContent =
+        products.length;
+
+
+    const totalStock =
+        products.reduce(
+            (total, product) => total + product.stock,
+            0
+        );
+
+
+    document.getElementById("stockCount").textContent =
+        totalStock;
+
+}
+
+
+function searchProducts() {
+
+    const search =
+        document
+            .getElementById("searchProduct")
+            .value
+            .toLowerCase();
+
+
+    const filtered =
+        products.filter(product =>
+            product.name.toLowerCase().includes(search)
+        );
+
+
+    displayProducts(filtered);
+
+}
+
+
+displayProducts();
+updateDashboard();
