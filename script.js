@@ -3324,3 +3324,200 @@ function renderTopProducts() {
 ========================================= */
 
 updateReportsDashboard();
+/* =========================================
+   BUSINESS SETTINGS MANAGEMENT
+========================================= */
+
+let businessSettings =
+    JSON.parse(
+        localStorage.getItem(
+            "bizmanager_settings"
+        )
+    ) || {
+
+        name: "",
+
+        phone: "",
+
+        email: "",
+
+        location: "",
+
+        currency: "KSh",
+
+        invoicePrefix: "INV",
+
+        invoiceFooter:
+            "Thank you for your business."
+
+    };
+
+
+/* -----------------------------------------
+   LOAD SETTINGS
+----------------------------------------- */
+
+function loadBusinessSettings() {
+
+    const name =
+        document.getElementById(
+            "businessName"
+        );
+
+    const phone =
+        document.getElementById(
+            "businessPhone"
+        );
+
+    const email =
+        document.getElementById(
+            "businessEmail"
+        );
+
+    const location =
+        document.getElementById(
+            "businessLocation"
+        );
+
+    const currency =
+        document.getElementById(
+            "businessCurrency"
+        );
+
+    const prefix =
+        document.getElementById(
+            "invoicePrefix"
+        );
+
+    const footer =
+        document.getElementById(
+            "invoiceFooter"
+        );
+
+
+    if (name)
+        name.value =
+            businessSettings.name || "";
+
+
+    if (phone)
+        phone.value =
+            businessSettings.phone || "";
+
+
+    if (email)
+        email.value =
+            businessSettings.email || "";
+
+
+    if (location)
+        location.value =
+            businessSettings.location || "";
+
+
+    if (currency)
+        currency.value =
+            businessSettings.currency ||
+            "KSh";
+
+
+    if (prefix)
+        prefix.value =
+            businessSettings.invoicePrefix ||
+            "INV";
+
+
+    if (footer)
+        footer.value =
+            businessSettings.invoiceFooter ||
+            "Thank you for your business.";
+
+}
+
+
+/* -----------------------------------------
+   SAVE SETTINGS
+----------------------------------------- */
+
+const businessSettingsForm =
+    document.getElementById(
+        "businessSettingsForm"
+    );
+
+
+if (businessSettingsForm) {
+
+    businessSettingsForm.addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+
+            businessSettings = {
+
+                name:
+                    document.getElementById(
+                        "businessName"
+                    ).value.trim(),
+
+                phone:
+                    document.getElementById(
+                        "businessPhone"
+                    ).value.trim(),
+
+                email:
+                    document.getElementById(
+                        "businessEmail"
+                    ).value.trim(),
+
+                location:
+                    document.getElementById(
+                        "businessLocation"
+                    ).value.trim(),
+
+                currency:
+                    document.getElementById(
+                        "businessCurrency"
+                    ).value,
+
+                invoicePrefix:
+                    document.getElementById(
+                        "invoicePrefix"
+                    ).value
+                        .trim()
+                        .toUpperCase(),
+
+                invoiceFooter:
+                    document.getElementById(
+                        "invoiceFooter"
+                    ).value.trim()
+
+            };
+
+
+            localStorage.setItem(
+                "bizmanager_settings",
+                JSON.stringify(
+                    businessSettings
+                )
+            );
+
+
+            showToast(
+                "Settings Saved",
+                "Your business settings were saved successfully.",
+                "✓"
+            );
+
+        }
+    );
+
+}
+
+
+/* -----------------------------------------
+   INITIALIZE SETTINGS
+----------------------------------------- */
+
+loadBusinessSettings();
