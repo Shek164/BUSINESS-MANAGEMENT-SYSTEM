@@ -3131,3 +3131,421 @@ textarea::placeholder {
     }
 
 }
+/* =========================================
+   PREMIUM REPORTS & ANALYTICS
+========================================= */
+
+.reports-section {
+    position: relative;
+    margin-top: 32px;
+    overflow: hidden;
+}
+
+/* PREMIUM HEADER */
+
+.reports-section::before {
+    content: "";
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    top: -220px;
+    right: -180px;
+    border-radius: 50%;
+    background: rgba(56, 189, 248, 0.08);
+    filter: blur(20px);
+    pointer-events: none;
+}
+
+.reports-section .panel-header {
+    position: relative;
+    z-index: 1;
+}
+
+.reports-section h2 {
+    font-size: clamp(26px, 3vw, 36px);
+    letter-spacing: -0.8px;
+    margin-bottom: 8px;
+}
+
+.reports-section .panel-header p {
+    max-width: 650px;
+    line-height: 1.7;
+    opacity: 0.68;
+}
+
+
+/* =========================================
+   REPORT KPI CARDS
+========================================= */
+
+.report-summary {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin: 30px 0;
+}
+
+
+.report-card {
+    position: relative;
+
+    min-height: 145px;
+
+    padding: 24px;
+
+    border-radius: 20px;
+
+    border: 1px solid
+        rgba(148, 163, 184, 0.14);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.055),
+            rgba(255, 255, 255, 0.018)
+        );
+
+    box-shadow:
+        0 18px 45px
+        rgba(0, 0, 0, 0.18);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.report-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 90px;
+    height: 90px;
+
+    right: -25px;
+    top: -25px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(56, 189, 248, 0.08);
+
+    filter: blur(2px);
+}
+
+
+.report-card:hover {
+    transform: translateY(-5px);
+
+    border-color:
+        rgba(56, 189, 248, 0.35);
+
+    box-shadow:
+        0 24px 55px
+        rgba(0, 0, 0, 0.24);
+}
+
+
+.report-card span {
+    display: block;
+
+    margin-bottom: 16px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+
+    opacity: 0.58;
+}
+
+
+.report-card strong {
+    display: block;
+
+    font-size: clamp(25px, 3vw, 34px);
+
+    font-weight: 800;
+
+    letter-spacing: -1px;
+}
+
+
+/* =========================================
+   REPORT CONTENT GRID
+========================================= */
+
+.reports-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.7fr)
+        minmax(280px, 1fr);
+
+    gap: 20px;
+
+    margin-bottom: 20px;
+}
+
+
+/* =========================================
+   ANALYSIS PANELS
+========================================= */
+
+.reports-section .analysis-panel {
+    position: relative;
+
+    padding: 26px;
+
+    border-radius: 20px;
+
+    border: 1px solid
+        rgba(148, 163, 184, 0.13);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.045),
+            rgba(255, 255, 255, 0.015)
+        );
+
+    box-shadow:
+        0 18px 45px
+        rgba(0, 0, 0, 0.14);
+}
+
+
+.reports-section .analysis-panel h3 {
+    margin: 4px 0 0;
+
+    font-size: 20px;
+
+    letter-spacing: -0.3px;
+}
+
+
+/* =========================================
+   REPORT CHART
+========================================= */
+
+.report-chart {
+    min-height: 280px;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding:
+        35px
+        10px
+        5px;
+
+    margin-top: 20px;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(56, 189, 248, 0.025),
+            transparent
+        );
+
+    border:
+        1px solid
+        rgba(148, 163, 184, 0.08);
+}
+
+
+/* CHART BARS */
+
+.report-chart .chart-bar {
+    flex: 1;
+
+    max-width: 55px;
+
+    min-height: 8px;
+
+    border-radius:
+        10px
+        10px
+        4px
+        4px;
+
+    background:
+        linear-gradient(
+            to top,
+            #0ea5e9,
+            #38bdf8
+        );
+
+    box-shadow:
+        0 8px 22px
+        rgba(56, 189, 248, 0.18);
+
+    transition:
+        height 0.5s ease,
+        transform 0.25s ease;
+}
+
+
+.report-chart .chart-bar:hover {
+    transform:
+        scaleY(1.04);
+}
+
+
+/* =========================================
+   INVENTORY REPORT
+========================================= */
+
+.report-inventory {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 14px;
+
+    margin-top: 24px;
+}
+
+
+.report-inventory-row {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 17px 18px;
+
+    border-radius: 14px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    border:
+        1px solid
+        rgba(148, 163, 184, 0.09);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.report-inventory-row:hover {
+    background:
+        rgba(56, 189, 248, 0.055);
+
+    transform:
+        translateX(3px);
+}
+
+
+.report-inventory-row span {
+    font-size: 13px;
+
+    opacity: 0.65;
+}
+
+
+.report-inventory-row strong {
+    font-size: 20px;
+
+    font-weight: 800;
+}
+
+
+/* =========================================
+   TOP PRODUCTS
+========================================= */
+
+.top-products-panel {
+    margin-top: 20px;
+}
+
+
+.top-products-panel .table-wrapper {
+    margin-top: 20px;
+}
+
+
+.top-products-panel table {
+    min-width: 620px;
+}
+
+
+.top-products-panel tbody tr {
+    transition:
+        background 0.2s ease;
+}
+
+
+.top-products-panel tbody tr:hover {
+    background:
+        rgba(56, 189, 248, 0.035);
+}
+
+
+/* =========================================
+   REPORT RESPONSIVE DESIGN
+========================================= */
+
+@media (max-width: 1100px) {
+
+    .report-summary {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .reports-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .report-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .reports-section .analysis-panel {
+        padding: 20px;
+        border-radius: 17px;
+    }
+
+    .report-card {
+        min-height: 125px;
+        padding: 20px;
+    }
+
+    .report-chart {
+        min-height: 220px;
+        padding: 25px 5px 5px;
+        gap: 7px;
+    }
+
+    .report-chart .chart-bar {
+        max-width: 35px;
+    }
+
+    .report-inventory-row {
+        padding: 15px;
+    }
+}
