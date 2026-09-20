@@ -1011,6 +1011,16 @@ saleForm.addEventListener(
 
 
         sales.unshift(newSale);
+       /* UPDATE CUSTOMER PURCHASE TOTAL */
+
+selectedCustomer.totalPurchases =
+    (Number(selectedCustomer.totalPurchases) || 0)
+    + total;
+
+localStorage.setItem(
+    "bizmanager_customers",
+    JSON.stringify(customers)
+);
 
 
         /* REDUCE INVENTORY */
