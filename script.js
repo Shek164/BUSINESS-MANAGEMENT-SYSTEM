@@ -776,6 +776,8 @@ const saleForm =
 
 const saleProduct =
     document.getElementById("saleProduct");
+const saleCustomer =
+    document.getElementById("saleCustomer");
 
 const saleQuantity =
     document.getElementById("saleQuantity");
